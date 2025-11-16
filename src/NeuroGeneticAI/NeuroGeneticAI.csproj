@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Infrastructure/UnityStubs/*.cs" />
+    <Compile Include="Infrastructure/Diagnostics/*.cs" />
+    <Compile Include="Controllers/*.cs" />
+    <Compile Include="Genetics/*.cs" />
+    <Compile Include="Robotics/*.cs" />
+    <Compile Include="Sensors/*.cs" />
+    <Compile Include="Scoring/*.cs" />
+    <Compile Include="Utils/*.cs" />
+  </ItemGroup>
+</Project>

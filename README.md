@@ -1,21 +1,43 @@
 # NeuroGeneticAI
 
+NeuroGeneticAI is a cleaned-up Unity/AI research sandbox for evolving neural controllers with either a genetic algorithm or a hill climber. The Unity specific components were retained while the core logic was reorganized into a conventional `src/` tree with a `.sln`/`.csproj` so the code base can be linted and unit tested outside of Unity.
 
-## 1. Introduction
-This work describes the tests conducted and the results obtained in a Practical Work focused on neural networks and genetic algorithms to train an agent to attack and defend a ball in a soccer game. The neural network consisted of 3 neurons, with 18 input parameters and 2 outputs (force intensity and application angle). Genetic algorithms were used to optimize the agent's behavior.
+## Repository layout
 
-## 3. Parameter Modeling
-Tests were conducted to determine the best parameters for the genetic algorithm. The tested parameters included mutation probability, crossover probability, tournament size, population size, and the use of elitism. Based on the results, the following values were selected:
-- Mutation: 0.05%
-- Crossover: 0.7%
-- Tournament Size: 5
-- Population Size: 70
-- Elitist: Enabled
+```
+src/NeuroGeneticAI/
+├── Controllers        # Unity behaviours that orchestrate matches and evaluations
+├── Genetics           # GA/Hill Climber implementations plus the neural network
+├── Infrastructure     # Logging abstraction and Unity stubs for .NET builds
+├── Robotics           # Physical robot representation
+├── Scoring            # Goals, hit counters, and score keeping logic
+├── Sensors            # Ray-casting detector
+└── Utils              # Camera/sensor helpers
+```
 
-## 4. Map Resolution
-The work included solving various maps, such as "ControlTheBallToAdversaryGoal" and "Defense." Specific fitness functions were developed for each scenario and optimized to train the agent to act effectively.
+Additional documentation (including the original academic report) lives in `docs/`.
 
-## 5. Results and Conclusions
-The work involved the analysis of different agent evolution scenarios and the selection of the best fitness functions and parameters for each scenario. The results and conclusions obtained for each map were discussed.
+## Getting started
 
-The report provides an overview of the work carried out and the choices made to successfully train the agents in different scenarios. Specific details and in-depth analyses are available in the source code documents and full reports.
+1. Install the .NET 6 SDK (or newer) if you want to lint/format the code outside of Unity.
+2. Restore/build the solution:
+
+   ```bash
+   dotnet build NeuroGeneticAI.sln
+   ```
+
+   The solution uses lightweight Unity stubs so the build succeeds without the Unity editor installed.
+3. Open the Unity project that references these scripts and assign the controllers to your prefabs as usual.
+
+## Testing
+
+Unit tests can be added under `tests/` (not provided here) and executed via `dotnet test`. The logging abstraction in `Infrastructure/Diagnostics` makes it trivial to redirect log messages to Unity's `Debug.Log` or any other sink.
+
+## Debugging aids
+
+* Every controller now writes structured messages via `LogManager.Logger`; replace the default `ConsoleLogger` if you want to forward logs elsewhere.
+* The neural controller (`D31NeuralControler`) sanitizes detector output and logs missing sensor data so it is easier to diagnose null references.
+
+## Cleaning legacy assets
+
+All `.meta`, `.zip`, and other Unity generated artifacts were removed from the git history. The compressed `LearningAlgorithms`, `Sensors`, and `Utils` directories were expanded into normal source folders so the files can be versioned and reviewed individually.
